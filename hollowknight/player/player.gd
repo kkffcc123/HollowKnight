@@ -28,6 +28,7 @@ var jump_state
 
 var can_double_jump : bool = false
 var double_jump_height = 100
+var is_double_jumping : bool = false
 
 func _ready() -> void:
 	pass
@@ -45,12 +46,12 @@ func _physics_process(delta: float) -> void:
 			normal_physics_process(delta)
 		State.DASH:
 			dash_physics_process(delta)
-			
-	dash_and_double_jump_refresh()
-	
+
 	move_and_slide()
 	
 func normal_physics_process(delta: float) -> void:
+	double_jump_refresh()
+	dash_refresh()
 	horizontal_move()
 	jump_logic(delta)
 	set_animation()
@@ -74,9 +75,13 @@ func change_state_to_dash() -> void:
 		is_dashing = true
 		currcent_state = State.DASH
 
-func dash_and_double_jump_refresh() -> void:
+func dash_refresh() -> void:
 	if is_on_floor():
 		can_dash = true
+
+func double_jump_refresh() -> void:
+	if is_on_floor():
+		can_double_jump = true
 
 func horizontal_move() -> void:
 	horizontal_move_direciton.x = Input.get_axis("move_left","move_right")
