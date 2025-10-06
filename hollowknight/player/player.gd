@@ -24,7 +24,6 @@ var deceleraion_speed = 30
 
 var jump_height = 200
 var lower_jump = 4
-var jump_state
 
 var can_double_jump : bool = false
 var double_jump_height = 100
@@ -50,8 +49,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 func normal_physics_process(delta: float) -> void:
-	double_jump_refresh()
-	dash_refresh()
+	dash_and_double_jump_refresh()
 	horizontal_move()
 	jump_logic(delta)
 	set_animation()
@@ -75,12 +73,9 @@ func change_state_to_dash() -> void:
 		is_dashing = true
 		currcent_state = State.DASH
 
-func dash_refresh() -> void:
+func dash_and_double_jump_refresh() -> void:
 	if is_on_floor():
 		can_dash = true
-
-func double_jump_refresh() -> void:
-	if is_on_floor():
 		can_double_jump = true
 
 func horizontal_move() -> void:
@@ -92,12 +87,14 @@ func horizontal_move() -> void:
 	
 func jump_logic(delta : float) -> void:
 	if Input.is_action_just_pressed("jump"):
-		jump_state = -1
-		
-	if is_on_floor() and jump_state == -1:
-		velocity.y = jump_state * jump_height
+		if is_on_floor():
+			velocity.y = -jump_height
+		elif can_double_jump == true:
+			velocity.y = -double_jump_height
+			is_double_jumping = true
+			can_double_jump = false
+			
 	if not Input.is_action_pressed("jump"):
-		jump_state = 0
 		if velocity.y < 0:
 			velocity.y += gravity * delta * lower_jump
 
@@ -111,10 +108,15 @@ func set_animation() -> void:
 	set_sprite_flip()
 	
 	if not is_on_floor():
-		if velocity.y < 0:
-			animation_player.play("jump")
-		if velocity.y > 0:
-			animation_player.play("fall")
+		if is_double_jumping == true:
+			animation_player.play("double_jump")
+			await animation_player.animation_finished
+			is_double_jumping = false
+		else:
+			if velocity.y < 0:
+				animation_player.play("jump")
+			if velocity.y > 0:
+				animation_player.play("fall")
 		
 	elif horizontal_move_direciton.x:
 		animation_player.play("move")
