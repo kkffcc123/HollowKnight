@@ -1,7 +1,8 @@
 extends CharacterBody2D
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var sprite_2d: Sprite2D = $Sprite2D
+@onready var sprite_2d: Sprite2D = $Area2D/Sprite2D
+@onready var area_2d: Area2D = $Area2D
 
 enum State{
 	NORMAL,
@@ -60,7 +61,7 @@ func dash_physics_process(delta: float) -> void:
 	
 	dash_direciton.x = horizontal_move_direciton.x
 	if dash_direciton.x == 0:
-		dash_direciton.x = -1 if sprite_2d.flip_h == true else 1
+		dash_direciton.x = -1 if area_2d.scale.x == -1 else 1
 	
 	velocity.x = dash_direciton.x * dash_speed
 	animation_player.play("dash")
@@ -100,9 +101,9 @@ func jump_logic(delta : float) -> void:
 
 func set_sprite_flip() -> void:
 	if horizontal_move_direciton.x == -1:
-		sprite_2d.flip_h = true
+		area_2d.scale.x = -1
 	elif horizontal_move_direciton.x == 1:
-		sprite_2d.flip_h = false
+		area_2d.scale.x = 1
 
 func set_animation() -> void:
 	set_sprite_flip()
