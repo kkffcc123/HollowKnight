@@ -7,6 +7,9 @@ extends CharacterBody2D
 enum State{
 	NORMAL,
 	DASH,
+	HORIZONGTAL_ATTACK,
+	UP_ATTACK,
+	DOWN_ATTACK,
 }
 
 var currcent_state = State.NORMAL
@@ -46,6 +49,12 @@ func _physics_process(delta: float) -> void:
 			normal_physics_process(delta)
 		State.DASH:
 			dash_physics_process(delta)
+		State.HORIZONGTAL_ATTACK:
+			dash_physics_process(delta)
+		State.UP_ATTACK:
+			dash_physics_process(delta)
+		State.DOWN_ATTACK:
+			dash_physics_process(delta)
 
 	move_and_slide()
 	
@@ -54,7 +63,7 @@ func normal_physics_process(delta: float) -> void:
 	horizontal_move()
 	jump_logic(delta)
 	set_animation()
-	change_state_to_dash()
+	change_state()
 
 func dash_physics_process(delta: float) -> void:
 	can_dash = false
@@ -68,11 +77,26 @@ func dash_physics_process(delta: float) -> void:
 	await animation_player.animation_finished
 	is_dashing = false
 	currcent_state = State.NORMAL
+	
+func horizontal_attack_physics_process(delta: float) -> void:
+	pass
+	
+func up_attack_physics_process(delta: float) -> void:
+	pass
+	
+func down_attack_physics_process(delta: float) -> void:
+	pass
 
-func change_state_to_dash() -> void:
+func change_state() -> void:
 	if Input.is_action_just_pressed("dash") and can_dash == true:
 		is_dashing = true
 		currcent_state = State.DASH
+	if Input.is_action_just_pressed("attack"):
+		currcent_state = State.HORIZONGTAL_ATTACK
+	if Input.is_action_just_pressed("attack") and Input.is_action_pressed("move_up"):
+		currcent_state = State.UP_ATTACK
+	if Input.is_action_just_pressed("attack") and Input.is_action_pressed("move_down") and not is_on_floor():
+		currcent_state = State.DOWN_ATTACK
 
 func dash_and_double_jump_refresh() -> void:
 	if is_on_floor():
