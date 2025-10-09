@@ -3,6 +3,7 @@ extends CharacterBody2D
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $Area2D/Sprite2D
 @onready var area_2d: Area2D = $Area2D
+@onready var attack_timer: Timer = $AttackTimer
 
 enum State{
 	NORMAL,
@@ -33,6 +34,9 @@ var can_double_jump : bool = false
 var double_jump_height = 100
 var is_double_jumping : bool = false
 
+var horizontal_attack_number : int = 0
+
+
 func _ready() -> void:
 	pass
 	
@@ -50,11 +54,11 @@ func _physics_process(delta: float) -> void:
 		State.DASH:
 			dash_physics_process(delta)
 		State.HORIZONGTAL_ATTACK:
-			dash_physics_process(delta)
+			horizontal_attack_physics_process(delta)
 		State.UP_ATTACK:
-			dash_physics_process(delta)
+			up_attack_physics_process(delta)
 		State.DOWN_ATTACK:
-			dash_physics_process(delta)
+			down_attack_physics_process(delta)
 
 	move_and_slide()
 	
@@ -79,23 +83,38 @@ func dash_physics_process(delta: float) -> void:
 	currcent_state = State.NORMAL
 	
 func horizontal_attack_physics_process(delta: float) -> void:
-	pass
-	
+	if horizontal_attack_number == 0:
+		animation_player.play("horizontal_attack_1")
+		await animation_player.animation_finished
+	else:
+		animation_player.play("horizontal_attack_2")
+		await animation_player.animation_finished
+		
+	currcent_state = State.NORMAL
+		
 func up_attack_physics_process(delta: float) -> void:
-	pass
+	animation_player.play("up_attack")
+	await animation_player.animation_finished
+	currcent_state = State.NORMAL
 	
 func down_attack_physics_process(delta: float) -> void:
-	pass
+	animation_player.play("down_attack")
+	await animation_player.animation_finished
+	currcent_state = State.NORMAL
 
 func change_state() -> void:
 	if Input.is_action_just_pressed("dash") and can_dash == true:
 		is_dashing = true
 		currcent_state = State.DASH
-	if Input.is_action_just_pressed("attack"):
+	if Input.is_action_just_pressed("attack") and attack_timer.is_stopped():
+		attack_timer.start()
+		horizontal_attack_number = randi_range(0,1)
 		currcent_state = State.HORIZONGTAL_ATTACK
-	if Input.is_action_just_pressed("attack") and Input.is_action_pressed("move_up"):
+	if Input.is_action_just_pressed("attack") and Input.is_action_pressed("move_up") and attack_timer.is_stopped():
+		attack_timer.start()
 		currcent_state = State.UP_ATTACK
-	if Input.is_action_just_pressed("attack") and Input.is_action_pressed("move_down") and not is_on_floor():
+	if Input.is_action_just_pressed("attack") and Input.is_action_pressed("move_down") and not is_on_floor() and attack_timer.is_stopped():
+		attack_timer.start()
 		currcent_state = State.DOWN_ATTACK
 
 func dash_and_double_jump_refresh() -> void:
@@ -107,9 +126,9 @@ func horizontal_move() -> void:
 	horizontal_move_direciton.x = Input.get_axis("move_left","move_right")
 	if horizontal_move_direciton.x:
 		velocity.x = horizontal_move_direciton.x * horizontal_move_speed
-	else: 
-		velocity.x = move_toward(velocity.x,0,deceleraion_speed)
-	
+	else:
+		velocity.x = 0
+		
 func jump_logic(delta : float) -> void:
 	if Input.is_action_just_pressed("jump"):
 		if is_on_floor():
