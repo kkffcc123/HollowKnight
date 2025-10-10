@@ -20,7 +20,7 @@ var can_dash : bool = false
 var is_dashing : bool = false
 var dash_gravity = 0
 #var dash_cd = 4.0
-var dash_speed = 100
+var dash_speed = 200
 var dash_direciton : Vector2 = Vector2.ZERO
 
 var gravity = 300
@@ -32,7 +32,7 @@ var jump_height = 200
 var lower_jump = 4
 
 var can_double_jump : bool = false
-var double_jump_height = 100
+var double_jump_height = 150
 var is_double_jumping : bool = false
 
 var horizontal_attack_number : int = 0
