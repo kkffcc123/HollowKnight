@@ -4,6 +4,7 @@ extends CharacterBody2D
 @onready var sprite_2d: Sprite2D = $Area2D/Sprite2D
 @onready var area_2d: Area2D = $Area2D
 @onready var attack_timer: Timer = $AttackTimer
+@onready var animation_gather: Node2D = $AnimationGather
 
 enum State{
 	NORMAL,
@@ -35,6 +36,8 @@ var double_jump_height = 100
 var is_double_jumping : bool = false
 
 var horizontal_attack_number : int = 0
+
+var black_dash_is_ready : bool = false
 
 func _ready() -> void:
 	pass
@@ -75,11 +78,22 @@ func dash_physics_process(delta: float) -> void:
 	if dash_direciton.x == 0:
 		dash_direciton.x = -1 if area_2d.scale.x == -1 else 1
 	
+	black_dash_is_ready = animation_gather.black_dash_is_ready
+	
 	velocity.x = dash_direciton.x * dash_speed
-	animation_player.play("dash")
-	await animation_player.animation_finished
-	is_dashing = false
-	currcent_state = State.NORMAL
+	
+	if black_dash_is_ready == true:
+		
+		animation_player.play("black_dash")
+		await animation_player.animation_finished
+		animation_gather.play_gather_animation()
+		is_dashing = false
+		currcent_state = State.NORMAL
+	else:
+		animation_player.play("dash")
+		await animation_player.animation_finished
+		is_dashing = false
+		currcent_state = State.NORMAL
 	
 func horizontal_attack_physics_process(delta: float) -> void:
 	if horizontal_attack_number == 0:
