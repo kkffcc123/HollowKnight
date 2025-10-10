@@ -36,7 +36,6 @@ var is_double_jumping : bool = false
 
 var horizontal_attack_number : int = 0
 
-
 func _ready() -> void:
 	pass
 	
@@ -107,16 +106,17 @@ func change_state() -> void:
 		is_dashing = true
 		currcent_state = State.DASH
 	if Input.is_action_just_pressed("attack") and attack_timer.is_stopped():
-		attack_timer.start()
-		horizontal_attack_number = randi_range(0,1)
-		currcent_state = State.HORIZONGTAL_ATTACK
-	if Input.is_action_just_pressed("attack") and Input.is_action_pressed("move_up") and attack_timer.is_stopped():
-		attack_timer.start()
-		currcent_state = State.UP_ATTACK
-	if Input.is_action_just_pressed("attack") and Input.is_action_pressed("move_down") and not is_on_floor() and attack_timer.is_stopped():
-		attack_timer.start()
-		currcent_state = State.DOWN_ATTACK
-
+		if Input.is_action_pressed("move_down") and not is_on_floor() and attack_timer.is_stopped():
+			attack_timer.start()
+			currcent_state = State.DOWN_ATTACK
+		elif Input.is_action_pressed("move_up") and attack_timer.is_stopped():
+			attack_timer.start()
+			currcent_state = State.UP_ATTACK
+		else:
+			attack_timer.start()
+			horizontal_attack_number = randi_range(0,1)
+			currcent_state = State.HORIZONGTAL_ATTACK
+	
 func dash_and_double_jump_refresh() -> void:
 	if is_on_floor():
 		can_dash = true
