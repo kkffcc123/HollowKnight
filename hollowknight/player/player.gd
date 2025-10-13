@@ -1,8 +1,8 @@
 extends CharacterBody2D
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
-@onready var sprite_2d: Sprite2D = $Area2D/Sprite2D
-@onready var area_2d: Area2D = $Area2D
+@onready var sprite_2d: Sprite2D = $SpriteArea2D/Sprite2D
+@onready var area_2d: Area2D = $SpriteArea2D
 @onready var attack_timer: Timer = $AttackTimer
 @onready var animation_gather: Node2D = $AnimationGather
 
