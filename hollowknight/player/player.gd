@@ -180,3 +180,6 @@ func set_animation() -> void:
 		animation_player.play("move")
 	else:
 		animation_player.play("idle")
+
+func _on_player_hit_area_2d_area_entered(area: Area2D) -> void:
+	print("player injured!!")
