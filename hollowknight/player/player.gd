@@ -2,7 +2,7 @@ extends CharacterBody2D
 
 @onready var animation_player: AnimationPlayer = $AnimationPlayer
 @onready var sprite_2d: Sprite2D = $SpriteArea2D/Sprite2D
-@onready var area_2d: Area2D = $SpriteArea2D
+@onready var sprite_area_2d: Area2D = $SpriteArea2D
 @onready var attack_timer: Timer = $AttackTimer
 @onready var animation_gather: Node2D = $AnimationGather
 
@@ -12,6 +12,7 @@ enum State{
 	HORIZONGTAL_ATTACK,
 	UP_ATTACK,
 	DOWN_ATTACK,
+	ATTACK_JUMP
 }
 
 var currcent_state = State.NORMAL
@@ -30,6 +31,7 @@ var deceleraion_speed = 30
 
 var jump_height = 200
 var lower_jump = 4
+var attack_jump_height = 250
 
 var can_double_jump : bool = false
 var double_jump_height = 150
@@ -61,6 +63,8 @@ func _physics_process(delta: float) -> void:
 			up_attack_physics_process(delta)
 		State.DOWN_ATTACK:
 			down_attack_physics_process(delta)
+		State.ATTACK_JUMP:
+			attack_jump_physics_process(delta)
 
 	move_and_slide()
 	
@@ -76,7 +80,7 @@ func dash_physics_process(delta: float) -> void:
 	
 	dash_direciton.x = horizontal_move_direciton.x
 	if dash_direciton.x == 0:
-		dash_direciton.x = -1 if area_2d.scale.x == -1 else 1
+		dash_direciton.x = -1 if sprite_area_2d.scale.x == -1 else 1
 	
 	black_dash_is_ready = animation_gather.black_dash_is_ready
 	
@@ -114,6 +118,10 @@ func down_attack_physics_process(delta: float) -> void:
 	animation_player.play("down_attack")
 	await animation_player.animation_finished
 	currcent_state = State.NORMAL
+	
+func attack_jump_physics_process(delta : float) -> void:
+	pass
+	
 
 func change_state() -> void:
 	if Input.is_action_just_pressed("dash") and can_dash == true:
@@ -158,9 +166,9 @@ func jump_logic(delta : float) -> void:
 
 func set_sprite_flip() -> void:
 	if horizontal_move_direciton.x == -1:
-		area_2d.scale.x = -1
+		sprite_area_2d.scale.x = -1
 	elif horizontal_move_direciton.x == 1:
-		area_2d.scale.x = 1
+		sprite_area_2d.scale.x = 1
 
 func set_animation() -> void:
 	set_sprite_flip()
@@ -181,5 +189,20 @@ func set_animation() -> void:
 	else:
 		animation_player.play("idle")
 
+
+func _on_horizontal_attack_1_area_2d_area_entered(area: Area2D) -> void:
+	global_position.x -= sprite_area_2d.scale.x * 5
+
+func _on_horizontal_attack_2_area_2d_area_entered(area: Area2D) -> void:
+	global_position.x -= sprite_area_2d.scale.x * 5
+
+func _on_up_attack_area_2d_area_entered(area: Area2D) -> void:
+	pass
+
+func _on_down_attack_area_2d_4_area_entered(area: Area2D) -> void:
+	can_double_jump = true
+	can_dash = true
+	velocity.y -= attack_jump_height
+
 func _on_player_hit_area_2d_area_entered(area: Area2D) -> void:
-	print("player injured!!")
+	print("player injured")

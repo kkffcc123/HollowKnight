@@ -13,6 +13,69 @@
 [ext_resource type="Texture2D" uid="uid://c3m3gjq0ki6vp" path="res://assets/hollownight/小骑士黑冲.png" id="11_5cj7d"]
 [ext_resource type="PackedScene" uid="uid://cbmjwo12dl5u6" path="res://player/animation_gather.tscn" id="13_ae3an"]
 
+[sub_resource type="Animation" id="Animation_lsxgn"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("SpriteArea2D/HorizontalAttack1Area2D/CollisionPolygon2D:disabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("SpriteArea2D/HorizontalAttack2Area2D/CollisionPolygon2D:disabled")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("SpriteArea2D/UpAttackArea2D/CollisionPolygon2D:disabled")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [true]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("SpriteArea2D/DownAttackArea2D4/CollisionPolygon2D:disabled")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [false]
+}
+tracks/4/type = "value"
+tracks/4/imported = false
+tracks/4/enabled = true
+tracks/4/path = NodePath("SpriteArea2D/Sprite2D:vframes")
+tracks/4/interp = 1
+tracks/4/loop_wrap = true
+tracks/4/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [1]
+}
+
 [sub_resource type="Animation" id="Animation_mby13"]
 resource_name = "black_dash"
 length = 0.266673
@@ -59,10 +122,10 @@ tracks/3/path = NodePath("SpriteArea2D/Sprite2D:vframes")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(),
-"transitions": PackedFloat32Array(),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": []
+"values": [1]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -183,10 +246,10 @@ tracks/3/path = NodePath("SpriteArea2D/Sprite2D:vframes")
 tracks/3/interp = 1
 tracks/3/loop_wrap = true
 tracks/3/keys = {
-"times": PackedFloat32Array(),
-"transitions": PackedFloat32Array(),
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
 "update": 1,
-"values": []
+"values": [1]
 }
 tracks/4/type = "value"
 tracks/4/imported = false
@@ -1342,57 +1405,6 @@ tracks/9/keys = {
 "values": [true]
 }
 
-[sub_resource type="Animation" id="Animation_lsxgn"]
-length = 0.001
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("SpriteArea2D/HorizontalAttack1Area2D/CollisionPolygon2D:disabled")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/1/type = "value"
-tracks/1/imported = false
-tracks/1/enabled = true
-tracks/1/path = NodePath("SpriteArea2D/HorizontalAttack2Area2D/CollisionPolygon2D:disabled")
-tracks/1/interp = 1
-tracks/1/loop_wrap = true
-tracks/1/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-tracks/2/type = "value"
-tracks/2/imported = false
-tracks/2/enabled = true
-tracks/2/path = NodePath("SpriteArea2D/UpAttackArea2D/CollisionPolygon2D:disabled")
-tracks/2/interp = 1
-tracks/2/loop_wrap = true
-tracks/2/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [true]
-}
-tracks/3/type = "value"
-tracks/3/imported = false
-tracks/3/enabled = true
-tracks/3/path = NodePath("SpriteArea2D/DownAttackArea2D4/CollisionPolygon2D:disabled")
-tracks/3/interp = 1
-tracks/3/loop_wrap = true
-tracks/3/keys = {
-"times": PackedFloat32Array(0),
-"transitions": PackedFloat32Array(1),
-"update": 1,
-"values": [false]
-}
-
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_yvvtt"]
 _data = {
 "RESET": SubResource("Animation_lsxgn"),
@@ -1417,27 +1429,27 @@ script = ExtResource("1_db3c3")
 [node name="SpriteArea2D" type="Area2D" parent="."]
 
 [node name="Sprite2D" type="Sprite2D" parent="SpriteArea2D"]
-position = Vector2(0, 1)
-texture = ExtResource("9_fpx0v")
+position = Vector2(-21, 1)
+texture = ExtResource("11_5cj7d")
 hframes = 4
 
 [node name="HorizontalAttack1Area2D" type="Area2D" parent="SpriteArea2D"]
 collision_layer = 2
-collision_mask = 0
+collision_mask = 4
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="SpriteArea2D/HorizontalAttack1Area2D"]
 polygon = PackedVector2Array(2, -7, 5, 3, 6, 13, 22, 13, 31, 11, 35, 6, 34, 2, 28, -4, 17, -8, 2, -8)
 
 [node name="HorizontalAttack2Area2D" type="Area2D" parent="SpriteArea2D"]
 collision_layer = 2
-collision_mask = 0
+collision_mask = 4
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="SpriteArea2D/HorizontalAttack2Area2D"]
 polygon = PackedVector2Array(2, -1, 7, 8, 6, 17, 19, 15, 29, 12, 34, 10, 36, 5, 35, -2, 21, -5, 8, -5, 4, -4, 2, -2)
 
 [node name="UpAttackArea2D" type="Area2D" parent="SpriteArea2D"]
 collision_layer = 2
-collision_mask = 0
+collision_mask = 4
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="SpriteArea2D/UpAttackArea2D"]
 polygon = PackedVector2Array(-18, 11, -20, 8, -18, -20, -5, -32, 9, -32, 18, -19, 18, -1, 14, -1, 9, -8, 0, -9, -9, -7, -14, 2, -17, 11)
@@ -1445,7 +1457,7 @@ disabled = true
 
 [node name="DownAttackArea2D4" type="Area2D" parent="SpriteArea2D"]
 collision_layer = 2
-collision_mask = 0
+collision_mask = 4
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="SpriteArea2D/DownAttackArea2D4"]
 polygon = PackedVector2Array(-17, -8, -18, 21, -8, 37, 0, 38, 10, 34, 17, 17, 17, 8, 14, 8, 8, 17, -8, 18, -15, -9)
@@ -1472,5 +1484,9 @@ one_shot = true
 
 [node name="AnimationGather" parent="." instance=ExtResource("13_ae3an")]
 
+[connection signal="area_entered" from="SpriteArea2D/HorizontalAttack1Area2D" to="." method="_on_horizontal_attack_1_area_2d_area_entered"]
+[connection signal="area_entered" from="SpriteArea2D/HorizontalAttack2Area2D" to="." method="_on_horizontal_attack_2_area_2d_area_entered"]
+[connection signal="area_entered" from="SpriteArea2D/UpAttackArea2D" to="." method="_on_up_attack_area_2d_area_entered"]
+[connection signal="area_entered" from="SpriteArea2D/DownAttackArea2D4" to="." method="_on_down_attack_area_2d_4_area_entered"]
 [connection signal="area_entered" from="SpriteArea2D/Player_hit_Area2D" to="." method="_on_player_hit_area_2d_area_entered"]
 [connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
