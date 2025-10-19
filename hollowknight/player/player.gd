@@ -5,6 +5,8 @@ extends CharacterBody2D
 @onready var sprite_area_2d: Area2D = $SpriteArea2D
 @onready var attack_timer: Timer = $AttackTimer
 @onready var animation_gather: Node2D = $AnimationGather
+@onready var invincible_timer: Timer = $InvincibleTimer
+@onready var player_hurt_collision: CollisionPolygon2D = $SpriteArea2D/PlayerHurtArea2D/PlayerHurtCollision
 
 enum State{
 	NORMAL,
@@ -12,7 +14,8 @@ enum State{
 	HORIZONGTAL_ATTACK,
 	UP_ATTACK,
 	DOWN_ATTACK,
-	ATTACK_JUMP
+	ATTACK_JUMP,
+	HURT_STATE,
 }
 
 var currcent_state = State.NORMAL
@@ -41,6 +44,8 @@ var horizontal_attack_number : int = 0
 
 var black_dash_is_ready : bool = false
 
+var hurt_distance : int = 200
+
 func _ready() -> void:
 	pass
 	
@@ -65,6 +70,8 @@ func _physics_process(delta: float) -> void:
 			down_attack_physics_process(delta)
 		State.ATTACK_JUMP:
 			attack_jump_physics_process(delta)
+		State.HURT_STATE:
+			hurt_physics_process(delta)
 
 	move_and_slide()
 	
@@ -122,6 +129,16 @@ func down_attack_physics_process(delta: float) -> void:
 func attack_jump_physics_process(delta : float) -> void:
 	pass
 	
+func hurt_physics_process(delta : float) -> void:
+	animation_player.play("hurt")
+	
+	if sprite_area_2d.scale.x == -1:
+		velocity.x = hurt_distance
+	else:
+		velocity.x = -hurt_distance
+	
+	await animation_player.animation_finished
+	currcent_state = State.NORMAL
 
 func change_state() -> void:
 	if Input.is_action_just_pressed("dash") and can_dash == true:
@@ -204,5 +221,5 @@ func _on_down_attack_area_2d_4_area_entered(area: Area2D) -> void:
 	can_dash = true
 	velocity.y -= attack_jump_height
 
-func _on_player_hit_area_2d_area_entered(area: Area2D) -> void:
-	print("player injured")
+func _on_player_hurt_area_2d_area_entered(area: Area2D) -> void:
+	currcent_state = State.HURT_STATE

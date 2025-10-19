@@ -147,19 +147,19 @@ position = Vector2(0, -16)
 texture = ExtResource("1_bir2a")
 hframes = 4
 
-[node name="Boss_Hit_Area2D" type="Area2D" parent="."]
+[node name="BossHurtArea2D" type="Area2D" parent="."]
 collision_layer = 4
 collision_mask = 2
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Boss_Hit_Area2D"]
+[node name="BossHurtCollision" type="CollisionPolygon2D" parent="BossHurtArea2D"]
 position = Vector2(0, -16)
 polygon = PackedVector2Array(-8, -11, -8, 16, 8, 16, 8, -11)
 
-[node name="Boss_Hurt_Area2D" type="Area2D" parent="."]
-collision_layer = 0
+[node name="BossHitArea2D" type="Area2D" parent="."]
+collision_layer = 4
 collision_mask = 0
 
-[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Boss_Hurt_Area2D"]
+[node name="BossHitCollision" type="CollisionPolygon2D" parent="BossHitArea2D"]
 position = Vector2(0, -16)
 polygon = PackedVector2Array(-8, -11, -8, 16, 8, 16, 8, -11)
 
@@ -171,4 +171,4 @@ autoplay = "idle"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 
-[connection signal="area_entered" from="Boss_Hit_Area2D" to="." method="_on_boss_hit_area_2d_area_entered"]
+[connection signal="area_entered" from="BossHurtArea2D" to="." method="_on_boss_hurt_area_2d_area_entered"]
