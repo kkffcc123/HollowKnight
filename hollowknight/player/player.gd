@@ -43,6 +43,7 @@ var is_double_jumping : bool = false
 var horizontal_attack_number : int = 0
 
 var black_dash_is_ready : bool = false
+var is_black_dashing : bool = false
 
 var hurt_distance : int = 200
 var player_shining : bool = false
@@ -95,11 +96,18 @@ func dash_physics_process(delta: float) -> void:
 	velocity.x = dash_direciton.x * dash_speed
 	
 	if black_dash_is_ready == true:
-		
+		is_black_dashing = true
 		animation_player.play("black_dash")
+		
+		if is_black_dashing:
+			player_hurt_collision.disabled = true
+		
 		await animation_player.animation_finished
 		animation_gather.play_gather_animation()
+		is_black_dashing = false
 		is_dashing = false
+		if invincible_timer.is_stopped():
+			player_hurt_collision.disabled = false
 		currcent_state = State.NORMAL
 	else:
 		animation_player.play("dash")
@@ -229,6 +237,7 @@ func _on_up_attack_area_2d_area_entered(area: Area2D) -> void:
 func _on_down_attack_area_2d_4_area_entered(area: Area2D) -> void:
 	can_double_jump = true
 	can_dash = true
+	velocity.y = 0
 	velocity.y -= attack_jump_height
 
 func _on_player_hurt_area_2d_area_entered(area: Area2D) -> void:

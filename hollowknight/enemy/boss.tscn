@@ -1,7 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://bfqflm27nto2y"]
+[gd_scene load_steps=8 format=3 uid="uid://bfqflm27nto2y"]
 
 [ext_resource type="Script" path="res://enemy/boss.gd" id="1_6223t"]
 [ext_resource type="Texture2D" uid="uid://bjtbubte381en" path="res://assets/hollownight/表弟站立.png" id="1_bir2a"]
+[ext_resource type="Shader" path="res://enemy/boss.gdshader" id="2_rryra"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_orb47"]
+shader = ExtResource("2_rryra")
 
 [sub_resource type="Animation" id="Animation_vsh0c"]
 length = 0.001
@@ -143,6 +147,8 @@ script = ExtResource("1_6223t")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 texture_filter = 1
+material = SubResource("ShaderMaterial_orb47")
+use_parent_material = true
 position = Vector2(0, -16)
 texture = ExtResource("1_bir2a")
 hframes = 4
@@ -171,4 +177,9 @@ autoplay = "idle"
 
 [node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="."]
 
+[node name="MaterialTimer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
+
 [connection signal="area_entered" from="BossHurtArea2D" to="." method="_on_boss_hurt_area_2d_area_entered"]
+[connection signal="timeout" from="MaterialTimer" to="." method="_on_material_timer_timeout"]
