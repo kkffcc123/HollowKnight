@@ -34,7 +34,7 @@ var deceleraion_speed = 30
 
 var jump_height = 200
 var lower_jump = 4
-var attack_jump_height = 250
+var attack_jump_height = 200
 
 var can_double_jump : bool = false
 var double_jump_height = 150
@@ -237,8 +237,7 @@ func _on_up_attack_area_2d_area_entered(area: Area2D) -> void:
 func _on_down_attack_area_2d_4_area_entered(area: Area2D) -> void:
 	can_double_jump = true
 	can_dash = true
-	velocity.y = 0
-	velocity.y -= attack_jump_height
+	velocity.y = -attack_jump_height
 
 func _on_player_hurt_area_2d_area_entered(area: Area2D) -> void:
 	player_shining = true
