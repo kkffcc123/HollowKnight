@@ -45,6 +45,7 @@ var horizontal_attack_number : int = 0
 var black_dash_is_ready : bool = false
 
 var hurt_distance : int = 200
+var player_shining : bool = false
 
 func _ready() -> void:
 	pass
@@ -130,6 +131,15 @@ func attack_jump_physics_process(delta : float) -> void:
 	pass
 	
 func hurt_physics_process(delta : float) -> void:
+	if invincible_timer.is_stopped() == true:
+		invincible_timer.start()
+		player_hurt_collision.disabled = true
+		while player_shining:
+			sprite_2d.visible = false
+			await(get_tree().create_timer(0.05).timeout)
+			sprite_2d.visible = true
+			await(get_tree().create_timer(0.05).timeout)
+	
 	animation_player.play("hurt")
 	
 	if sprite_area_2d.scale.x == -1:
@@ -222,4 +232,10 @@ func _on_down_attack_area_2d_4_area_entered(area: Area2D) -> void:
 	velocity.y -= attack_jump_height
 
 func _on_player_hurt_area_2d_area_entered(area: Area2D) -> void:
+	player_shining = true
 	currcent_state = State.HURT_STATE
+
+func _on_invincible_timer_timeout() -> void:
+	player_hurt_collision.disabled = false
+	player_shining = false
+	
